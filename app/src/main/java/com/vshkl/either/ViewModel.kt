@@ -1,11 +1,13 @@
 package com.vshkl.either
 
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class ViewModel(
     private val coroutineScope: CoroutineScope,
+    private val coroutineDispatcherIO: CoroutineDispatcher,
     private val api: Api,
 ) {
 
@@ -23,7 +25,7 @@ class ViewModel(
     private fun fetch(shouldFail: Boolean) {
         _state.value = State.Loading
 
-        coroutineScope.launch {
+        coroutineScope.launch(coroutineDispatcherIO) {
             api
                 .run {
                     if (shouldFail)

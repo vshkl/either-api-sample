@@ -3,9 +3,10 @@ package com.vshkl.either
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.vshkl.either.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class Activity : AppCompatActivity() {
@@ -14,6 +15,7 @@ class Activity : AppCompatActivity() {
     private val viewModel: ViewModel by lazy {
         ViewModel(
             coroutineScope = lifecycleScope,
+            coroutineDispatcherIO = Dispatchers.IO,
             api = ApiService.api,
         )
     }
@@ -32,24 +34,22 @@ class Activity : AppCompatActivity() {
 
         fun observeViewMode() {
             lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel
-                        .state
-                        .collect { state ->
-                            when (state) {
-                                is State.Idle -> Unit
-                                is State.Loading -> {
-                                    binding.tvResult.text = ""
-                                }
-                                is State.Success -> {
-                                    binding.tvResult.text = state.profile.pretty()
-                                }
-                                is State.Failure -> {
-                                    binding.tvResult.text = state.error.pretty()
-                                }
+                viewModel.state
+                    .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+                    .collect { state ->
+                        when (state) {
+                            is State.Idle -> Unit
+                            is State.Loading -> {
+                                binding.tvResult.text = ""
+                            }
+                            is State.Success -> {
+                                binding.tvResult.text = state.profile.pretty()
+                            }
+                            is State.Failure -> {
+                                binding.tvResult.text = state.error.pretty()
                             }
                         }
-                }
+                    }
             }
         }
 
