@@ -29,16 +29,16 @@ class ViewModel(
         _state.value = State.Loading
 
         coroutineScope.launch(coroutineDispatcherIO) {
-            api
+            _state.value = api
                 .run {
                     if (shouldFail)
                         getError() else
                         getSuccess()
                 }
-                .bimap({ errorResponse: Dto.ErrorResponse ->
-                    _state.value = State.Failure(errorResponse.data.toDomain())
+                .fold({ errorResponse: Dto.ErrorResponse ->
+                    State.Failure(errorResponse.data.toDomain())
                 }, { successResponse: Dto.SuccessResponse ->
-                    _state.value = State.Success(successResponse.data.toDomain())
+                    State.Success(successResponse.data.toDomain())
                 })
         }
     }
