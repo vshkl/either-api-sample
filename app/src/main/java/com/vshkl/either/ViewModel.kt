@@ -1,5 +1,8 @@
 package com.vshkl.either
 
+import com.vshkl.either.Models.Domain
+import com.vshkl.either.Models.Dto
+import com.vshkl.either.Models.Dto.toDomain
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,46 +35,18 @@ class ViewModel(
                         getError() else
                         getSuccess()
                 }
-                .bimap({ errorResponse: ErrorResponseDto ->
+                .bimap({ errorResponse: Dto.ErrorResponse ->
                     _state.value = State.Failure(errorResponse.data.toDomain())
-                }, { successResponse: SuccessResponseDto ->
+                }, { successResponse: Dto.SuccessResponse ->
                     _state.value = State.Success(successResponse.data.toDomain())
                 })
         }
     }
 }
 
-data class Profile(
-    val id: Int,
-    val username: String,
-    val displayName: String,
-) {
-
-    fun pretty(): String {
-        return "Profile(" +
-                "\n    id = $id" +
-                "\n    username = $username " +
-                "\n    displayName = $displayName" +
-                "\n)"
-    }
-}
-
-data class Error(
-    val message: String,
-    val reasons: List<String>,
-) {
-
-    fun pretty(): String {
-        return "Error(" +
-                "\n    message = $message" +
-                "\n    reasons = $reasons" +
-                "\n)"
-    }
-}
-
 sealed class State {
     object Idle : State()
     object Loading : State()
-    data class Success(val profile: Profile) : State()
-    data class Failure(val error: Error) : State()
+    data class Success(val profile: Domain.Profile) : State()
+    data class Failure(val error: Domain.Error) : State()
 }
