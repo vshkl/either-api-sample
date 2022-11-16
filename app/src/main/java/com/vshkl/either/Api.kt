@@ -1,6 +1,7 @@
 package com.vshkl.either
 
 import arrow.core.Either
+import com.google.gson.annotations.SerializedName
 import retrofit2.http.GET
 
 interface Api {
@@ -19,7 +20,15 @@ data class SuccessResponseDto(
     data class SuccessDto(
         val id: Int,
         val username: String,
-        val display: String,
+        @SerializedName("display_name") val displayName: String,
+    )
+}
+
+fun SuccessResponseDto.SuccessDto.toDomain(): Profile {
+    return Profile(
+        id = id,
+        username = username,
+        displayName = displayName,
     )
 }
 
@@ -30,5 +39,12 @@ data class ErrorResponseDto(
     data class ErrorDto(
         val message: String,
         val reasons: List<String>,
+    )
+}
+
+fun ErrorResponseDto.ErrorDto.toDomain(): Error {
+    return Error(
+        message = message,
+        reasons = reasons,
     )
 }
