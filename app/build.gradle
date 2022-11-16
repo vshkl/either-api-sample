@@ -1,0 +1,70 @@
+plugins {
+    id "com.android.application"
+    id "org.jetbrains.kotlin.android"
+}
+
+android {
+    namespace "com.vshkl.either"
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.vshkl.either"
+        minSdk 26
+        targetSdk 33
+        versionCode 1
+        versionName "1.0.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation "androidx.core:core-ktx:1.9.0"
+    implementation "androidx.appcompat:appcompat:1.5.1"
+    implementation "com.google.android.material:material:1.7.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+
+    // Coroutines https://github.com/Kotlin/kotlinx.coroutines
+    implementation platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4")
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android"
+
+    // Gson https://github.com/google/gson
+    implementation "com.google.code.gson:gson:2.10"
+
+    // OkHttp https://github.com/square/okhttp
+    implementation platform("com.squareup.okhttp3:okhttp-bom:4.10.0")
+    implementation "com.squareup.okhttp3:okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor"
+
+    // Retrofit https://github.com/square/retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+
+    // ArrowKt https://github.com/arrow-kt/arrow
+    implementation platform("io.arrow-kt:arrow-stack:1.1.3")
+    implementation "io.arrow-kt:arrow-core"
+    implementation "io.arrow-kt:arrow-core-retrofit"
+
+    testImplementation "junit:junit:4.13.2"
+
+    androidTestImplementation "androidx.test.ext:junit:1.1.4"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0"
+}
