@@ -1,9 +1,17 @@
 package com.vshkl.either
 
 import com.google.gson.annotations.SerializedName
+import com.vshkl.either.Models.Domain
+import com.vshkl.either.Models.Dto
 
+/**
+ * Collection of models used in the app. Includes both [Dto] and [Domain] models.
+ */
 object Models {
 
+    /**
+     * Data Transfer Object (DTO) models used for network requests.
+     */
     object Dto {
 
         data class SuccessResponse(
@@ -43,6 +51,9 @@ object Models {
         }
     }
 
+    /**
+     * Domain models used for business logic.
+     */
     object Domain {
 
         data class Profile(

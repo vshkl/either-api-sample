@@ -44,6 +44,9 @@ class ViewModel(
     }
 }
 
+/**
+ * State of the async operation.
+ */
 sealed class State {
     object Idle : State()
     object Loading : State()
