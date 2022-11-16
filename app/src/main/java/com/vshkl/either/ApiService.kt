@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiService {
 
-    private const val BASE_URL = "http://localhost:3000/api/v1/"
+    private const val BASE_URL = "http://10.0.2.2:3000/api/v1/"
 
     private val httpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
